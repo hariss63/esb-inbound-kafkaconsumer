@@ -1,0 +1,50 @@
+Pre-requisites:
+
+ - Maven 3.x
+ - Java 1.6 or above
+ - The org.wso2.esb.integration.integration-base project is required. The test suite has been configured to download this project automatically. If the automatic download fails, download the following project and compile it using the mvn clean install command to update your local repository:
+   https://github.com/wso2-extensions/esb-connector-integrationbase
+
+Tested Platform: 
+
+ - Microsoft WINDOWS V-7
+ - UBUNTU 13.04
+ - wso2esb-4.10.0-M2-SNAPSHOT
+ - Java 1.7
+
+1. Create object and pushTopic:
+
+
+
+2. Navigate to "<INBOUND_HOME>" and run the following command.
+        $ mvn clean install
+
+3. To use the Kafka inbound endpoint, you need to download the inbound jar from https://storepreview.wso2.com/store/ and copy the jar to the <ESB_HOME>/repository/components/dropins directory.
+
+4. Configuration:
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<inboundEndpoint xmlns="http://ws.apache.org/ns/synapse"
+                 name="kafka"
+                 sequence="request"
+                 onError="fault"
+                 class="org.wso2.carbon.inbound.kafkaconsumer.KafkaPollingConsumer"
+                 suspend="false">
+   <parameters>
+      <parameter name="inbound.behavior">polling</parameter>
+      <parameter name="interval">1000</parameter>
+      <parameter name="sequential">true</parameter>
+      <parameter name="coordination">true</parameter>
+      <parameter name="key.deserializer">org.apache.kafka.common.serialization.StringDeserializer</parameter>
+      <parameter name="value.deserializer">org.apache.kafka.common.serialization.StringDeserializer</parameter>
+      <parameter name="enable.auto.commit">true</parameter>
+      <parameter name="group.id">test-group</parameter>
+      <parameter name="topic">test,test1</parameter>
+      <parameter name="bootstrap.servers">localhost:9092</parameter>
+      <parameter name="auto.commit.interval.ms">1000</parameter>
+      <parameter name="session.timeout.ms">30000</parameter>
+      <parameter name="contentType">application/json</parameter>
+   </parameters>
+</inboundEndpoint>
+
