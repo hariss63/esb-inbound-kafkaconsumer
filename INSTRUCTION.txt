@@ -2,19 +2,15 @@ Pre-requisites:
 
  - Maven 3.x
  - Java 1.6 or above
- - The org.wso2.esb.integration.integration-base project is required. The test suite has been configured to download this project automatically. If the automatic download fails, download the following project and compile it using the mvn clean install command to update your local repository:
-   https://github.com/wso2-extensions/esb-connector-integrationbase
-
+ 
 Tested Platform: 
 
  - Microsoft WINDOWS V-7
- - UBUNTU 13.04
- - wso2esb-4.10.0-M2-SNAPSHOT
- - Java 1.7
+ - UBUNTU 14.04
+ - wso2esb-5.0.0
+ - Java 1.8
 
-1. Create object and pushTopic:
-
-
+1. Create Topic and start the zookeeper, kafka server and also producer to send a json/xml message to test the consumption via WSO2 ESB.
 
 2. Navigate to "<INBOUND_HOME>" and run the following command.
         $ mvn clean install
