@@ -70,15 +70,14 @@ public class KafkaPollingConsumer extends GenericPollingConsumer {
         String[] topicsArray = (properties.getProperty(KafkaConstants.TOPIC_NAME)).split(",");
         consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(Arrays.asList(topicsArray));
-
         try {
             while (true) {
                 ConsumerRecords<byte[], byte[]> records = consumer.poll(100);
                 for (ConsumerRecord record : records) {
                     msgCtx = createMessageContext();
-                    msgCtx.setProperty("partitionNo", record.partition());
-                    msgCtx.setProperty("messageValue", record.value());
-                    msgCtx.setProperty("offset", record.offset());
+                    msgCtx.setProperty(KafkaConstants.PARTITION_NO, record.partition());
+                    msgCtx.setProperty(KafkaConstants.MESSAGE_VALUE, record.value());
+                    msgCtx.setProperty(KafkaConstants.OFFSET, record.offset());
                     injectMessage(record.value().toString(), properties.getProperty(KafkaConstants.CONTENT_TYPE));
                 }
 

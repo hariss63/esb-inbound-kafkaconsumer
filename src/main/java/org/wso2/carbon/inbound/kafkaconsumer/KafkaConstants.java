@@ -22,6 +22,11 @@ package org.wso2.carbon.inbound.kafkaconsumer;
  */
 public class KafkaConstants {
 
+    public static final String PARTITION_NO = "partitionNo";
+    public static final String MESSAGE_VALUE = "messageValue";
+    public static final String OFFSET = "offset";
+
+
     //Mandatory parameter for Kafka Inbound Endpoint.
     public static final String TOPIC_NAME = "topic";
     public static final String CONTENT_TYPE = "contentType";
