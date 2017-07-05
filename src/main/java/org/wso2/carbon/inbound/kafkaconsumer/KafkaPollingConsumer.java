@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 /**
  * Kafka Polling Consumer.
@@ -69,7 +68,7 @@ public class KafkaPollingConsumer extends GenericPollingConsumer {
 
     public void connect() {
 
-        String[] topicsArray = (properties.getProperty(KafkaConstants.TOPIC_NAME)).split(Pattern.quote(","));
+        String[] topicsArray = (properties.getProperty(KafkaConstants.TOPIC_NAME)).split(",");
         List<String> topics = Arrays.asList(topicsArray);
         consumer = new KafkaConsumer<>(properties);
 
@@ -82,17 +81,22 @@ public class KafkaPollingConsumer extends GenericPollingConsumer {
                     msgCtx = createMessageContext();
                     msgCtx.setProperty("partitionNo", record.partition());
                     msgCtx.setProperty("messageValue", record.value());
+                    msgCtx.setProperty("offset", record.offset());
                     injectMessage(record.value().toString(), properties.getProperty(KafkaConstants.CONTENT_TYPE));
+                }
+
+                if (!records.isEmpty()) {
+                    consumer.commitAsync();
                 }
             }
         } catch (WakeupException e) {
-            throw new SynapseException("", e);
+            throw new SynapseException("Error while wakeup the Kafka Consumer", e);
         }
     }
 
     @Override protected boolean injectMessage(String strMessage, String contentType) {
         AutoCloseInputStream in = new AutoCloseInputStream(new ByteArrayInputStream(strMessage.getBytes()));
-        return this.injectMessage((InputStream)in, contentType);
+        return this.injectMessage((InputStream) in, contentType);
     }
 
     @Override protected boolean injectMessage(InputStream in, String contentType) {
@@ -517,7 +521,7 @@ public class KafkaPollingConsumer extends GenericPollingConsumer {
     }
 
     /**
-     * Close the connection to the Kafka.
+     * Close the connection to the Amazon SQS.
      */
     public void destroy() {
         try {
