@@ -40,7 +40,6 @@ import org.wso2.carbon.inbound.endpoint.protocol.generic.GenericPollingConsumer;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -69,10 +68,8 @@ public class KafkaPollingConsumer extends GenericPollingConsumer {
     public void connect() {
 
         String[] topicsArray = (properties.getProperty(KafkaConstants.TOPIC_NAME)).split(",");
-        List<String> topics = Arrays.asList(topicsArray);
         consumer = new KafkaConsumer<>(properties);
-
-        consumer.subscribe(topics);
+        consumer.subscribe(Arrays.asList(topicsArray));
 
         try {
             while (true) {
