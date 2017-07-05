@@ -521,7 +521,7 @@ public class KafkaPollingConsumer extends GenericPollingConsumer {
     }
 
     /**
-     * Close the connection to the Amazon SQS.
+     * Close the connection to the Kafka.
      */
     public void destroy() {
         try {
